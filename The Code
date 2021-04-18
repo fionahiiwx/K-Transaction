@@ -1,0 +1,26 @@
+## Sample input:
+prices = [5, 11, 3, 50, 60, 90]
+k = 2
+## for k=1, buy once and sell once
+## can only buy 1 thing at a time, must sell it before buying another
+## -5+11-3+90=93
+
+## How the table would have looked like for a better visualization
+## k\profit | 5 | 11  | 3 | 50  | 60  | 90
+##______________________________________________
+## 0        | 0 | 0   | 0 | 0   | 0   | 0
+## 1        | 0 | 6   | 6 | 47  | 57  | 87
+## 2        | 0 | 6   | 6 | 53  | 63  | 93
+
+def max_profit(prices, k):
+    if not len(prices):
+        return 0
+    profits = [[0 for d in prices] for t in range(k+1)]
+    for t in range(1, k+1):
+        max_prof_rn = -100
+        for d in range(1, len(prices)):
+            max_prof_rn = max(max_prof_rn, profits[t-1][d-1] - prices[d-1])
+            profits[t][d] = max(profits[t][d-1], max_prof_rn + prices[d])
+    return profits[-1][-1]
+
+print(max_profit(prices, k))
